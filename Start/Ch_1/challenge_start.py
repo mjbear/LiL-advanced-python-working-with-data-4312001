@@ -60,12 +60,20 @@ with open("../../30DayQuakes.json", "r") as datafile:
             return sig
         return 0
     
-    TopTenSignificant = sorted(
+    sorted_by_significance = sorted(
         data['features'],
         key=signficance,
         reverse=True
-    )[:10]
-    print(f'There are {len(TopTenSignificant)} Significant events')
-    # print(f'Top Ten Significant Events: {TopTenSignificant}')
-    import pprint
-    pprint.pp(TopTenSignificant)
+    )
+    
+    print(f'Top Ten Significant Events:')
+    # TopTenSignificant = sorted_by_significance[:10]
+    # print(f'There are {len(TopTenSignificant)} Significant events')
+    # print(TopTenSignificant)
+    # import pprint
+    # pprint.pp(TopTenSignificant)
+    for i in range(0, 10):
+        print(
+            f"Event: {sorted_by_significance[i]['properties']['title']} ; "
+            f"Significance: {sorted_by_significance[i]['properties']['sig']}"
+        )
