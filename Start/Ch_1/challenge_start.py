@@ -13,4 +13,59 @@ import json
 # open the data file and load the JSON
 with open("../../30DayQuakes.json", "r") as datafile:
     data = json.load(datafile)
+
+    # TotalEvents = len(data['features'])
+    TotalEvents = data['metadata']['count']
+    print(f'Total Events: {TotalEvents}')
+
+    def felt_greater_than_100(q):
+        f = q['properties']['felt']
+        return f is not None and f >= 100
+
+    # TotalFelt = sum(
+    #     quake['properties']['felt'] is not None and
+    #     quake['properties']['felt'] >= 100
+    #         for quake in data['features']
+    # )
+    TotalFelt = len(
+        list(filter(
+            felt_greater_than_100,
+            data['features']
+        ))
+    )
+    print(f'Total Felt: {TotalFelt}')
     
+    def most_felt_event(q):
+        felt_ct = q['properties']['felt']
+        if felt_ct is not None:
+            return felt_ct
+        return 0
+
+    MostFeltEvent = max(
+        data['features'], key=most_felt_event
+    )['properties']['title']
+    print(f'Most Felt Event Name: {MostFeltEvent}')
+
+    MostFeltCount = max(
+        data['features'], key=most_felt_event
+    )['properties']['felt']
+    print(f'Most Felt Event Count: {MostFeltCount}')
+    
+    
+    # apparently there was an extra exercise that isn't included in the challenge
+    #   (seems to be this way since CoderPad appears to limit the amount of output)
+    def signficance(q):
+        sig = q['properties']['sig']
+        if sig is not None:
+            return sig
+        return 0
+    
+    TopTenSignificant = sorted(
+        data['features'],
+        key=signficance,
+        reverse=True
+    )[:10]
+    print(f'There are {len(TopTenSignificant)} Significant events')
+    # print(f'Top Ten Significant Events: {TopTenSignificant}')
+    import pprint
+    pprint.pp(TopTenSignificant)
